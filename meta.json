@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Sketch (Dashboard)",
+    "path": "sketch-dashboard",
+    "description": "Train a sketch classifier (dashboard interface)"
+  }, {
+    "name": "Sketch (Online)",
+    "path": "sketch-online",
+    "description": "Train a sketch classifier (online interface)"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "name": "uist2021-demos",
+  "description": "A Marcelle Application",
+  "version": "0.0.0",
+  "main": "public/bundle.js",
+  "keywords": [
+    "marcelle"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Jules Françoise",
+    "email": "me@julesfrancoise.com"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "backend": "marcelle-backend"
+  },
+  "dependencies": {
+    "@marcellejs/backend": "^0.0.2",
+    "@marcellejs/core": "^0.2.0",
+    "@tensorflow/tfjs-core": "2.8.6",
+    "@tensorflow/tfjs-layers": "2.8.6",
+    "svelte": "^3.35.0"
+  },
+  "devDependencies": {
+    "ejs": "^3.1.6",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-svelte3": "^2.7.3",
+    "rollup-plugin-svelte": "^7.1.0",
+    "vite": "^2.0.4"
+  }
+}
