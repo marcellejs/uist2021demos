@@ -12,6 +12,8 @@ import {
 } from '@marcellejs/core';
 import { classifier, instances, labels, source, sourceImages, store } from './common';
 
+classifier.sync('clinician-model');
+
 // -----------------------------------------------------------
 // CAPTURE TO DATASET
 // -----------------------------------------------------------

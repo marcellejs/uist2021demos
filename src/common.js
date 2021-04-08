@@ -32,6 +32,6 @@ export const classifier = tfGenericModel({
   inputType: 'image',
   taskType: 'classification',
   dataStore: store,
-}).sync('skin-lesion-classifier');
+});
 
 classifier.labels = labels;

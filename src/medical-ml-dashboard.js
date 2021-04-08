@@ -11,6 +11,7 @@ import {
   select,
   text,
   trainingPlot,
+  notification,
 } from '@marcellejs/core';
 import { pythonTrained } from './modules';
 import { classifier, instances, labels, source, sourceImages, store } from './common';
@@ -154,6 +155,24 @@ predictButton.$click.subscribe(async () => {
   await batchTesting.predict(classifier, trainingSet, 'data');
 });
 
+const selectClinicianModel = button({ text: 'Share Model' });
+selectClinicianModel.title = "Share the selected model for the clinician's dashboard.";
+selectClinicianModel.$click.subscribe(async () => {
+  await classifier.save(true, { name: 'clinician-model' });
+  notification({
+    title: 'Model Synchronized',
+    message: 'The model was saved for the clinician',
+    duration: 5000,
+  });
+});
+
+// -----------------------------------------------------------
+// CLINICIAN'S Data
+// -----------------------------------------------------------
+
+const correctSet = dataset({ name: 'CorrectSet', dataStore: store });
+const incorrectSet = dataset({ name: 'IncorrectSet', dataStore: store });
+
 // -----------------------------------------------------------
 // DASHBOARDS
 // -----------------------------------------------------------
@@ -170,7 +189,10 @@ dash
   .use(plotTraining, runSummary, modelSummary);
 dash.page('Real-time Testing').useLeft(classifier, source).use([sourceImages, plotResults]);
 dash.page('Batch Testing').useLeft(source, label).use(trainingSetBrowser, predictButton, confMat);
-// dash.link('/end-user/');
+dash
+  .page('Sharing')
+  .useLeft(selectClinicianModel)
+  .use("Clinician's data", [datasetBrowser(correctSet), datasetBrowser(incorrectSet)]);
 
 dash.settings.dataStores(store).datasets(trainingSet).models(classifier);
 
