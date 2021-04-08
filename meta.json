@@ -1,11 +1,15 @@
 [
   {
-    "name": "Sketch (Dashboard)",
-    "path": "sketch-dashboard",
-    "description": "Train a sketch classifier (dashboard interface)"
+    "name": "Sketch App (v1)",
+    "path": "sketch-v1",
+    "description": "Suzanne's initial prototype for training a sketch classifier"
   }, {
-    "name": "Sketch (Online)",
-    "path": "sketch-online",
-    "description": "Train a sketch classifier (online interface)"
+    "name": "Sketch App (v1++)",
+    "path": "sketch-v1b",
+    "description": "Suzanne's initial prototype, with a more detailed dashboard"
+  }, {
+    "name": "Sketch App (v2)",
+    "path": "sketch-v2",
+    "description": "Suzanne's final application with an improved workflow"
   }
 ]
