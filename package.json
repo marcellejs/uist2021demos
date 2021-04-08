@@ -14,7 +14,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "backend": "marcelle-backend"
+    "backend": "marcelle-backend",
+    "start": "marcelle-backend"
   },
   "dependencies": {
     "@marcellejs/core": "^0.2.0",
