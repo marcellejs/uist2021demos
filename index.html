@@ -65,7 +65,8 @@
       }
 
       a.btn {
-        background-color: #667eea;
+        background-color: #3D405B;
+        flex-grow: 1;
         padding-left: 1rem;
         padding-right: 1rem;
         padding-top: .5rem;
@@ -76,6 +77,14 @@
         color: white;
         text-decoration: none;
         margin-top: 20px;
+      }
+
+      a.btn.code {
+        border: 1px solid #81B29A;
+        background-color: transparent;
+        color: #81B29A;
+        margin-right: 0.5rem;
+        flex-grow: 0;
       }
 
       a.btn:hover {
@@ -112,10 +121,17 @@
                 <h2><%= example.name %></h2>
                 <div class="description"><%= example.description %></div>
               </div>
-              <a class="btn" href="/<%= example.path %>/">
-                Open Demo
-                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-              </a>
+              <div style="display: flex;">
+                <a class="btn code" href="<%= example.src %>" target="_blank">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </a>
+                <a class="btn" href="/<%= example.path %>/">
+                  Open Demo
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                </a>
+              </div>
             </div>
           <% } %>
         </div>
