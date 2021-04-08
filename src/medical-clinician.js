@@ -10,9 +10,19 @@ import {
   select,
   text,
 } from '@marcellejs/core';
-import { classifier, instances, labels, source, sourceImages, store } from './common';
+import {
+  classifier,
+  instances,
+  labels,
+  mobileDatasetBrowser,
+  source,
+  sourceImages,
+  store,
+} from './common';
 
-classifier.sync('clinician-model');
+store.connect().then(() => {
+  classifier.sync('clinician-model');
+});
 
 // -----------------------------------------------------------
 // CAPTURE TO DATASET
@@ -98,7 +108,7 @@ const dash = dashboard({
 
 dash
   .page('Check Images')
-  .useLeft(source, classifier)
+  .useLeft(source, classifier, mobileDatasetBrowser)
   .use([sourceImages, plotResults], [label, addToDataset], quality);
 
 dash

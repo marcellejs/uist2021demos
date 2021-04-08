@@ -6,7 +6,6 @@ import {
   confusionMatrix,
   dashboard,
   dataset,
-  fileUpload,
   classificationPlot,
   select,
   text,
@@ -17,17 +16,6 @@ import { pythonTrained } from './modules';
 import { classifier, instances, labels, source, sourceImages, store } from './common';
 
 let $dashboardPage;
-
-// -----------------------------------------------------------
-// Model Upload from files
-// -----------------------------------------------------------
-
-const up = fileUpload();
-up.title = 'Upload model files (.json and .bin)';
-
-up.$files.subscribe((fl) => {
-  classifier.loadFromFiles(fl);
-});
 
 // -----------------------------------------------------------
 // PYTHON-TRAINED MODULE
@@ -145,18 +133,19 @@ const trainingSetBrowser = datasetBrowser(trainingSet);
 // BATCH PREDICTION
 // -----------------------------------------------------------
 
-const batchTesting = batchPrediction({ name: 'mobilenet', dataStore: store });
+const batchTesting = batchPrediction({ name: 'ml-dashboard', dataStore: store });
 const predictButton = button({ text: 'Update predictions' });
+predictButton.title = 'Batch predictions';
 const confMat = confusionMatrix(batchTesting);
-confMat.title = 'Mobilenet: Confusion Matrix';
+// confMat.title = 'Confusion Matrix';
 
 predictButton.$click.subscribe(async () => {
   await batchTesting.clear();
   await batchTesting.predict(classifier, trainingSet, 'data');
 });
 
-const selectClinicianModel = button({ text: 'Share Model' });
-selectClinicianModel.title = "Share the selected model for the clinician's dashboard.";
+const selectClinicianModel = button({ text: 'Share' });
+selectClinicianModel.title = 'Share the selected model with the clinician';
 selectClinicianModel.$click.subscribe(async () => {
   await classifier.save(true, { name: 'clinician-model' });
   notification({
@@ -173,6 +162,11 @@ selectClinicianModel.$click.subscribe(async () => {
 const correctSet = dataset({ name: 'CorrectSet', dataStore: store });
 const incorrectSet = dataset({ name: 'IncorrectSet', dataStore: store });
 
+const correctSetBrowser = datasetBrowser(correctSet);
+correctSetBrowser.title = 'Correct Predictions';
+const incorrectSetBrowser = datasetBrowser(incorrectSet);
+incorrectSetBrowser.title = 'Incorrect Predictions';
+
 // -----------------------------------------------------------
 // DASHBOARDS
 // -----------------------------------------------------------
@@ -185,14 +179,14 @@ $dashboardPage = dash.$page;
 
 dash
   .page('Model Selector')
-  .useLeft(selectRun, selectModel, loadModelBtn, classifier, up)
+  .useLeft(selectRun, selectModel, loadModelBtn, classifier)
   .use(plotTraining, runSummary, modelSummary);
 dash.page('Real-time Testing').useLeft(classifier, source).use([sourceImages, plotResults]);
 dash.page('Batch Testing').useLeft(source, label).use(trainingSetBrowser, predictButton, confMat);
 dash
-  .page('Sharing')
-  .useLeft(selectClinicianModel)
-  .use("Clinician's data", [datasetBrowser(correctSet), datasetBrowser(incorrectSet)]);
+  .page('Collaboration')
+  .use('Share Model', selectClinicianModel)
+  .use("Clinician's data", [correctSetBrowser, incorrectSetBrowser]);
 
 dash.settings.dataStores(store).datasets(trainingSet).models(classifier);
 

@@ -52,8 +52,17 @@
 
       h2 {
         margin: 0;
-        padding-bottom: 8px;
+        padding-top: 12px;
+        padding-bottom: 12px;
         font-size: 1.4rem;
+        font-weight: 500;
+        color: #3D405B;
+      }
+
+      h3 {
+        margin: 0;
+        padding-bottom: 8px;
+        font-size: 1.3rem;
         font-weight: 500;
         border-bottom: 1px solid rgb(237,242,247);
       }
@@ -114,11 +123,34 @@
         <h1>Marcelle - UIST 2021 Demos</h1>
       </header>
       <main>
+        <h2>Case Study 1</h2>
         <div class="demo-container">
-          <% for (example of examples) { %>
+          <% for (example of examples.slice(0, 3)) { %>
             <div class="demo">
               <div>
-                <h2><%= example.name %></h2>
+                <h3><%= example.name %></h3>
+                <div class="description"><%= example.description %></div>
+              </div>
+              <div style="display: flex;">
+                <a class="btn code" href="<%= example.src %>" target="_blank">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </a>
+                <a class="btn" href="/<%= example.path %>/">
+                  Open Demo
+                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                </a>
+              </div>
+            </div>
+          <% } %>
+        </div>
+        <h2>Case Study 2</h2>
+        <div class="demo-container">
+          <% for (example of examples.slice(3, 7)) { %>
+            <div class="demo">
+              <div>
+                <h3><%= example.name %></h3>
                 <div class="description"><%= example.description %></div>
               </div>
               <div style="display: flex;">

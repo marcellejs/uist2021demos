@@ -29,5 +29,10 @@
     "path": "medical-clinician",
     "description": "Michels's dashboard...",
     "src": "/medical-clinician.js"
+  }, {
+    "name": "Medical App (Clinician Mobile App)",
+    "path": "medical-clinician-mobile",
+    "description": "Michels's dashboard...",
+    "src": "/medical-clinician-mobile.js"
   }
 ]
