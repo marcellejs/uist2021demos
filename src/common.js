@@ -2,7 +2,7 @@ import '@marcellejs/core/dist/marcelle.css';
 import { dataStore, imageUpload, tfGenericModel } from '@marcellejs/core';
 import { InstanceViewer } from './instance-viewer';
 
-const location = 'http://localhost:3030';
+const location = 'https://marcelle-uist2021-test.herokuapp.com';
 export const store = dataStore({ location });
 
 // -----------------------------------------------------------

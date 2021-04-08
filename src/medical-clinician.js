@@ -78,7 +78,11 @@ const quality = text({ text: 'Waiting for predictions...' });
 correctSet.$count
   .combine((a, b) => (100 * b) / (a + b || 1), incorrectSet.$count)
   .subscribe((percent) => {
-    quality.$text.set(`You evaluated ${percent.toFixed(0)}% of tested images as correct.`);
+    quality.$text.set(
+      `You evaluated ${percent.toFixed(0)}% of ${
+        correctSet.$count.value + incorrectSet.$count.value
+      } tested images as correct.`,
+    );
   });
 
 // -----------------------------------------------------------

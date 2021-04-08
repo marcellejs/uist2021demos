@@ -8,7 +8,6 @@ import {
   dataset,
   fileUpload,
   classificationPlot,
-  trainingProgress,
   select,
   text,
   trainingPlot,
@@ -109,7 +108,6 @@ model2.$run
     modelSummary.$text.set(s);
   });
 
-const progressTraining = trainingProgress(model2);
 const plotTraining = trainingPlot(model2, {
   loss: ['loss', 'val_loss'],
   accuracy: ['accuracy', 'val_accuracy'],
@@ -169,7 +167,7 @@ $dashboardPage = dash.$page;
 dash
   .page('Model Selector')
   .useLeft(selectRun, selectModel, loadModelBtn, classifier, up)
-  .use(progressTraining, plotTraining, runSummary, modelSummary);
+  .use(plotTraining, runSummary, modelSummary);
 dash.page('Real-time Testing').useLeft(classifier, source).use([sourceImages, plotResults]);
 dash.page('Batch Testing').useLeft(source, label).use(trainingSetBrowser, predictButton, confMat);
 // dash.link('/end-user/');

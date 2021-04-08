@@ -14,5 +14,20 @@
     "path": "sketch-v2",
     "description": "Suzanne's final application with an improved workflow",
     "src": "/sketch-v2.js"
+  }, {
+    "name": "Medical App (ML Expert)",
+    "path": "medical-ml-dashboard",
+    "description": "Louise's dashboard for monitoring and assessing image classification models",
+    "src": "/medical-ml-dashboard.js"
+  }, {
+    "name": "Medical App (ML Expert v2)",
+    "path": "medical-ml-comparison",
+    "description": "Louise's dashboard for comparing models",
+    "src": "/medical-ml-comparison.js"
+  }, {
+    "name": "Medical App (Clinician)",
+    "path": "medical-clinician",
+    "description": "Michels's dashboard...",
+    "src": "/medical-clinician.js"
   }
 ]
