@@ -1,9 +1,10 @@
 {
   "host": "localhost",
   "port": 3030,
-  "database": "nedb",
+  "database": "mongodb",
   "nedb": "../data",
   "mongodb": "mongodb://localhost:27017/marcelle_uist_2021_demos",
+  "gridfs": true,
   "uploads": "../uploads",
   "assetTypes": ["jpg", "jpeg", "png", "wav"],
   "paginate": {
