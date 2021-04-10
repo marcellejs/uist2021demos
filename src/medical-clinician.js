@@ -11,6 +11,7 @@ import {
   text,
 } from '@marcellejs/core';
 import {
+  $inputImages,
   classifier,
   instances,
   labels,
@@ -20,9 +21,7 @@ import {
   store,
 } from './common';
 
-store.connect().then(() => {
-  classifier.sync('clinician-model');
-});
+classifier.sync('clinician-model');
 
 // -----------------------------------------------------------
 // CAPTURE TO DATASET
@@ -60,7 +59,7 @@ predictButton.$click.subscribe(async () => {
 // REAL-TIME PREDICTION
 // -----------------------------------------------------------
 
-const predictionStream = source.$images.map(async (img) => classifier.predict(img)).awaitPromises();
+const predictionStream = $inputImages.map(async (img) => classifier.predict(img)).awaitPromises();
 
 const plotResults = classificationPlot(predictionStream);
 
@@ -118,6 +117,6 @@ dash
     confusionMatrixIncorrect,
   ]);
 
-dash.settings.dataStores(store).datasets(correctSetBrowser, incorrectSetBrowser).models(classifier);
+dash.settings.dataStores(store).datasets(correctSet, incorrectSet).models(classifier);
 
 dash.start();

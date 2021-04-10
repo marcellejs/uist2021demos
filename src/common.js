@@ -2,7 +2,8 @@ import '@marcellejs/core/dist/marcelle.css';
 import { dataset, datasetBrowser, dataStore, imageUpload, tfGenericModel } from '@marcellejs/core';
 import { InstanceViewer } from './instance-viewer';
 
-const location = 'https://marcelle-uist2021-test.herokuapp.com';
+const location = 'https://marcelle-uist2021.herokuapp.com';
+// const location = 'http://localhost:3030';
 export const store = dataStore({ location });
 
 // -----------------------------------------------------------
@@ -14,20 +15,30 @@ const mobileDataset = dataset({ name: 'mobile', dataStore: store });
 export const mobileDatasetBrowser = datasetBrowser(mobileDataset);
 mobileDatasetBrowser.title = 'Dataset: Captured from mobile phone';
 
-const $selectedMobileImage = mobileDatasetBrowser.$selected
+const $mobileInstances = mobileDatasetBrowser.$selected
   .filter((x) => x.length === 1)
-  .map(([id]) => mobileDataset.getInstance(id, ['data']))
+  .map(([id]) => mobileDataset.getInstance(id))
   .awaitPromises()
-  .map(({ data }) => data);
+  .map((x) => {
+    const { id, datasetName, ...rest } = x;
+    return rest;
+  });
+
+const $selectedMobileImage = $mobileInstances.map(({ data }) => data);
+
 export const source = imageUpload();
 
-export const sourceImages = new InstanceViewer(source.$images.merge($selectedMobileImage));
-export const instances = source.$thumbnails.map((thumbnail) => ({
+export const $inputImages = source.$images.merge($selectedMobileImage);
+
+export const sourceImages = new InstanceViewer($inputImages);
+
+export const $uploadInstances = source.$thumbnails.map((thumbnail) => ({
   type: 'image',
   data: source.$images.value,
   label: 'unlabeled',
   thumbnail,
 }));
+export const instances = $uploadInstances.merge($mobileInstances);
 
 export const labels = [
   'Actinic keratosis',

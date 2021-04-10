@@ -13,7 +13,7 @@ import {
   notification,
 } from '@marcellejs/core';
 import { pythonTrained } from './modules';
-import { classifier, instances, labels, source, sourceImages, store } from './common';
+import { $inputImages, classifier, instances, labels, source, sourceImages, store } from './common';
 
 let $dashboardPage;
 
@@ -46,10 +46,11 @@ loadModelBtn.title = 'Load Model Version';
 loadModelBtn.$click.sample(selectModel.$value).subscribe((checkpoint) => {
   if (checkpoint) {
     const epoch = checkpoint === 'Final' ? 'final' : checkpoint.split('Epoch: ')[1];
-    const modelPath = model2.$checkpoints.value.filter((x) => x.epoch.toString() === epoch)[0].url;
-    const url = `${store.location}/tfjs-models/${modelPath}`;
+    // eslint-disable-next-line no-underscore-dangle
+    const modelId = model2.$checkpoints.value.filter((x) => x.epoch.toString() === epoch)[0]._id;
+    const url = `${store.location}/tfjs-models/${modelId}/model.json`;
     // eslint-disable-next-line no-console
-    console.log('Loaded model:', url);
+    console.log('Loading model:', url);
     classifier.loadFromUrl(url);
   }
 });
@@ -106,7 +107,7 @@ const plotTraining = trainingPlot(model2, {
 // REAL-TIME PREDICTION
 // -----------------------------------------------------------
 
-const predictionStream = source.$images
+const predictionStream = $inputImages
   .filter(() => $dashboardPage.value === 'real-time-testing')
   .map(async (img) => classifier.predict(img))
   .awaitPromises();
@@ -147,7 +148,21 @@ predictButton.$click.subscribe(async () => {
 const selectClinicianModel = button({ text: 'Share' });
 selectClinicianModel.title = 'Share the selected model with the clinician';
 selectClinicianModel.$click.subscribe(async () => {
-  await classifier.save(true, { name: 'clinician-model' });
+  const { data } = await classifier.service.find({
+    query: {
+      name: 'clinician-model',
+      $select: ['id'],
+      $limit: 1,
+      $sort: {
+        updatedAt: -1,
+      },
+    },
+  });
+  if (data.length === 1) {
+    await classifier.save('clinician-model', {}, data[0].id);
+  } else {
+    await classifier.save('clinician-model');
+  }
   notification({
     title: 'Model Synchronized',
     message: 'The model was saved for the clinician',
