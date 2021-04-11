@@ -32,12 +32,10 @@ export const $inputImages = source.$images.merge($selectedMobileImage);
 
 export const sourceImages = new InstanceViewer($inputImages);
 
-export const $uploadInstances = source.$thumbnails.map((thumbnail) => ({
-  type: 'image',
-  data: source.$images.value,
-  label: 'unlabeled',
-  thumbnail,
-}));
+export const $uploadInstances = source.$images.zip(
+  (thumbnail, data) => ({ thumbnail, data, type: 'image', label: 'unlabeled' }),
+  source.$thumbnails,
+);
 export const instances = $uploadInstances.merge($mobileInstances);
 
 export const labels = [

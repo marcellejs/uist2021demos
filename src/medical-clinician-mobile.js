@@ -13,12 +13,10 @@ const capture = button({ text: 'Capture' });
 capture.title = 'Capture images';
 
 const $instances = capture.$click.sample(
-  input.$thumbnails.map((thumbnail) => ({
-    type: 'image',
-    data: input.$images.value,
-    label: 'unlabeled',
-    thumbnail,
-  })),
+  input.$images.zip(
+    (thumbnail, data) => ({ thumbnail, data, type: 'image', label: 'unlabeled' }),
+    input.$thumbnails,
+  ),
 );
 
 mobileDataset.capture($instances);
