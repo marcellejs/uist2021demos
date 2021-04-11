@@ -253,7 +253,7 @@ def params_transfer_finetune(base):
         "base_model": base,
         "imagenet_weights": True,
         "strategy": "transfer+finetune",
-        "epochs": [10, 20],
+        "epochs": [10, 10],
         "learning_rate": [1e-3, 1e-4],
         "data_augmentation": [False, False],
         "fine_tune_layers": [0, 30],
@@ -263,13 +263,13 @@ def params_transfer_finetune(base):
 if __name__ == "__main__":
     TRAIN_DIR = "/Users/jules/Documents/Research/Datasets/HAM10000/processed/train_dir"
     for PARAMS in [
-        params_end2end("mobilenet"),
+        # params_end2end("mobilenet"),
         params_transfer_finetune("mobilenet"),
-        params_end2end("resnet50v2"),
+        # params_end2end("resnet50v2"),
         params_transfer_finetune("resnet50v2"),
-        params_end2end("efficientnet"),
+        # params_end2end("efficientnet"),
         params_transfer_finetune("efficientnet"),
-        params_end2end("vgg16"),
+        # params_end2end("vgg16"),
         params_transfer_finetune("vgg16"),
     ]:
         TRAIN_DS, VAL_DS, LABELS = load_datasets(

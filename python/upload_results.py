@@ -21,7 +21,8 @@ if __name__ == "__main__":
     ARGS = parser.parse_args()
     uploader = Uploader(
         Remote(
-            backend_root="https://marcelle-uist2021-test.herokuapp.com",
+            # backend_root="http://localhost:3030",
+            backend_root="https://marcelle-uist2021.herokuapp.com",
             save_format="tfjs",
             source="keras",
         ),
