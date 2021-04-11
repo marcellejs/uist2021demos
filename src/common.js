@@ -1,9 +1,19 @@
 import '@marcellejs/core/dist/marcelle.css';
-import { dataset, datasetBrowser, dataStore, imageUpload, tfGenericModel } from '@marcellejs/core';
+import { dataset, datasetBrowser, dataStore, imageUpload } from '@marcellejs/core';
 import { InstanceViewer } from './instance-viewer';
 
-const location = 'https://marcelle-uist2021.herokuapp.com';
-// const location = 'http://localhost:3030';
+export const labels = [
+  'Actinic keratosis',
+  'Basal cell carcinoma',
+  'Benign keratosis',
+  'Dermatofibroma',
+  'Melanoma',
+  'Melanocytic nevus',
+  'Vascular lesion',
+];
+
+// const location = 'https://marcelle-uist2021.herokuapp.com';
+const location = 'http://localhost:3030';
 export const store = dataStore({ location });
 
 // -----------------------------------------------------------
@@ -37,21 +47,3 @@ export const $uploadInstances = source.$images.zip(
   source.$thumbnails,
 );
 export const instances = $uploadInstances.merge($mobileInstances);
-
-export const labels = [
-  'Actinic keratosis',
-  'Basal cell carcinoma',
-  'Benign keratosis',
-  'Dermatofibroma',
-  'Melanoma',
-  'Melanocytic nevus',
-  'Vascular lesion',
-];
-
-export const classifier = tfGenericModel({
-  inputType: 'image',
-  taskType: 'classification',
-  dataStore: store,
-});
-
-classifier.labels = labels;

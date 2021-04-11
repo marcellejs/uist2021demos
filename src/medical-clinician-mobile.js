@@ -1,6 +1,6 @@
 import '@marcellejs/core/dist/marcelle.css';
 import { datasetBrowser, dashboard, dataset, webcam, button } from '@marcellejs/core';
-import { classifier, store } from './common';
+import { store } from './common';
 
 const mobileDataset = dataset({ name: 'mobile', dataStore: store });
 
@@ -23,11 +23,11 @@ mobileDataset.capture($instances);
 
 const dash = dashboard({
   title: 'Marcelle: Skin Lesion Classification',
-  author: 'Marcelle Pirates Crew',
+  author: 'Louise',
 });
 
 dash.page('Main').use(input, capture, mobileDatasetBrowser);
 
-dash.settings.dataStores(store).datasets(mobileDatasetBrowser).models(classifier);
+dash.settings.dataStores(store).datasets(mobileDatasetBrowser);
 
 dash.start();

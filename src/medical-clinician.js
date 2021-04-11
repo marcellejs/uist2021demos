@@ -9,10 +9,10 @@ import {
   classificationPlot,
   select,
   text,
+  imageDisplay,
 } from '@marcellejs/core';
 import {
   $inputImages,
-  classifier,
   instances,
   labels,
   mobileDatasetBrowser,
@@ -20,11 +20,13 @@ import {
   sourceImages,
   store,
 } from './common';
+import { createModel, createPredictionStream } from './ml-utils';
 
+const classifier = createModel();
 classifier.sync('clinician-model');
 
 // -----------------------------------------------------------
-// CAPTURE TO DATASET
+// DATASET DEFINITIONS
 // -----------------------------------------------------------
 
 const correctSet = dataset({ name: 'CorrectSet', dataStore: store });
@@ -34,26 +36,6 @@ const correctSetBrowser = datasetBrowser(correctSet);
 correctSetBrowser.title = 'Dataset: Correct Predictions';
 const incorrectSetBrowser = datasetBrowser(incorrectSet);
 incorrectSetBrowser.title = 'Dataset: Incorrect Predictions';
-
-// -----------------------------------------------------------
-// BATCH PREDICTION
-// -----------------------------------------------------------
-
-const batchCorrect = batchPrediction({ name: 'correct', dataStore: store });
-const batchIncorrect = batchPrediction({ name: 'incorrect', dataStore: store });
-const predictButton = button({ text: 'Update confusion matrices' });
-predictButton.title = '';
-const confusionMatrixCorrect = confusionMatrix(batchCorrect);
-const confusionMatrixIncorrect = confusionMatrix(batchIncorrect);
-confusionMatrixCorrect.title = 'Confusion Matrix (Correct)';
-confusionMatrixIncorrect.title = 'Confusion Matrix (Incorrect)';
-
-predictButton.$click.subscribe(async () => {
-  await batchCorrect.clear();
-  await batchIncorrect.clear();
-  await batchCorrect.predict(classifier, correctSet, 'data');
-  await batchIncorrect.predict(classifier, incorrectSet, 'data');
-});
 
 // -----------------------------------------------------------
 // REAL-TIME PREDICTION
@@ -97,12 +79,44 @@ correctSet.$count
   });
 
 // -----------------------------------------------------------
+// INSPECT MISCLASSIFICATIONS
+// -----------------------------------------------------------
+
+const batchIncorrect = batchPrediction({ name: 'incorrect', dataStore: store });
+const predictButton = button({ text: 'Update Confusion Matrix' });
+predictButton.title = '';
+const confusionMatrixIncorrect = confusionMatrix(batchIncorrect);
+confusionMatrixIncorrect.title = 'Confusion Matrix (Incorrect)';
+
+predictButton.$click.subscribe(async () => {
+  await batchIncorrect.clear();
+  await batchIncorrect.predict(classifier, incorrectSet, 'data');
+});
+
+function selectedStream(ds, dsBrowser) {
+  return dsBrowser.$selected
+    .filter((x) => x.length === 1)
+    .map(([id]) => ds.getInstance(id, ['data']))
+    .awaitPromises()
+    .map(({ data }) => data);
+}
+
+const $selectedImage = selectedStream(correctSet, correctSetBrowser).merge(
+  selectedStream(incorrectSet, incorrectSetBrowser),
+);
+const $predictions2 = createPredictionStream($selectedImage, classifier);
+const plotResults2 = classificationPlot($predictions2);
+
+const helpText = text({ text: "Select instances to review the model's predictions" });
+helpText.title = 'hint';
+
+// -----------------------------------------------------------
 // DASHBOARDS
 // -----------------------------------------------------------
 
 const dash = dashboard({
   title: 'Marcelle: Skin Lesion Classification',
-  author: 'Marcelle Pirates Crew',
+  author: 'Louise',
 });
 
 dash
@@ -112,10 +126,9 @@ dash
 
 dash
   .page('Inspect Misclassifications')
-  .use([correctSetBrowser, incorrectSetBrowser], predictButton, [
-    confusionMatrixCorrect,
-    confusionMatrixIncorrect,
-  ]);
+  .useLeft(classifier, predictButton, confusionMatrixIncorrect)
+  .use(helpText)
+  .use([correctSetBrowser, incorrectSetBrowser], [imageDisplay($selectedImage), plotResults2]);
 
 dash.settings.dataStores(store).datasets(correctSet, incorrectSet).models(classifier);
 

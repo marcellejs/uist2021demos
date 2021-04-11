@@ -15,6 +15,7 @@
         margin: 0;
         padding: 0;
         min-height: 100vh;
+        /* background-color: rgb(237, 242, 247); */
       }
 
       .container {
@@ -28,9 +29,50 @@
         min-height: 100vh;
       }
 
+      .case-study-1 {
+        /* background-color: rgb(237, 242, 247); */
+        background-color: white;
+        margin-bottom: 4rem;
+        border-radius: .5rem;
+        padding: 0.5rem;
+      }
+
+      .case-study-2  {
+        /* background-color: rgb(237, 242, 247); */
+        background-color: white;
+        margin-bottom: 2rem;
+        border-radius: .5rem;
+        padding: 0.5rem;
+      }
+
+      h2 {
+        margin: 0 4rem;
+        padding: 12px;
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: white;
+        color: #3D405B;
+        border-bottom: 4px solid #3D405B;
+        /* border-radius: 1rem; */
+      }
+
+      .case-study-1 h2 {
+        /* background-color: #3D405B; */
+      }
+
+      .case-study-2 h2 {
+        /* background-color: #3D405B; */
+      }
+
       .demo-container {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      p {
+        text-align: left;
+        padding: 1rem 0;
+        margin: 0 4rem;
       }
 
       @media (max-width: 560px) {
@@ -40,6 +82,7 @@
       }
 
       .demo {
+        background-color: white;
         border: 2px solid rgb(226,232,240);
         border-radius: .5rem;
         margin: 8px;
@@ -50,20 +93,13 @@
         justify-content: space-between;
       }
 
-      h2 {
-        margin: 0;
-        padding: 12px;
-        font-size: 1.6rem;
-        font-weight: 500;
-        background-color: #08b87d;
-        color: white;
-      }
+
 
       .privacy {
         text-align: left;
         color: lightslategray;
-        padding: 12px;
-        margin: 0 1rem;
+        padding: 1rem 0;
+        margin: 0 4rem;
         margin-bottom: 1rem;
         border-radius: 4px;
       }
@@ -134,54 +170,57 @@
         <h1>Marcelle - UIST 2021 Demos</h1>
       </header>
       <main>
-        <h2>Case Study 1</h2>
-        <p>TODO: description</p>
-        <div class="privacy"><strong>Privacy Notice:</strong> Cookies are necessary to run the demo. In this demo, all data is stored in your browser. None of your sketches will be transfered to a remote server</div>
-        <div class="demo-container">
-          <% for (example of examples.slice(0, 3)) { %>
-            <div class="demo">
-              <div>
-                <h3><%= example.name %></h3>
-                <div class="description"><%= example.description %></div>
+        <div class="case-study-1">
+          <h2>Case Study 1</h2>
+          <p>TODO: description</p>
+          <div class="privacy"><strong>Privacy Notice:</strong> Cookies are necessary to run the demo. In this demo, all data is stored in your browser. None of your sketches will be transfered to a remote server</div>
+          <div class="demo-container">
+            <% for (example of examples.slice(0, 3)) { %>
+              <div class="demo">
+                <div>
+                  <h3><%= example.name %></h3>
+                  <div class="description"><%= example.description %></div>
+                </div>
+                <div style="display: flex;">
+                  <a class="btn code" href="<%= example.src %>" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                  </a>
+                  <a class="btn" href="/<%= example.path %>/">
+                    Open Demo
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                  </a>
+                </div>
               </div>
-              <div style="display: flex;">
-                <a class="btn code" href="<%= example.src %>" target="_blank">
-                  <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </a>
-                <a class="btn" href="/<%= example.path %>/">
-                  Open Demo
-                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-                </a>
-              </div>
-            </div>
-          <% } %>
+            <% } %>
+          </div>
         </div>
-        <br><br>
-        <h2>Case Study 2</h2>
-        <p>TODO: description</p>
-        <div class="privacy"><strong>Privacy Notice:</strong> Cookies are necessary to run the demo. In this demo, <span style="color: orange"><strong>all training sets are public and synchronized across clients</strong></span>. The data you provide we will uploaded to a server and available publicly. Dataset browsers provide controls for deleting instances and classes.</div>
-        <div class="demo-container">
-          <% for (example of examples.slice(3, 7)) { %>
-            <div class="demo">
-              <div>
-                <h3><%= example.name %></h3>
-                <div class="description"><%= example.description %></div>
+        <div class="case-study-2">
+          <h2>Case Study 2</h2>
+          <p>TODO: description</p>
+          <div class="privacy"><strong>Privacy Notice:</strong> Cookies are necessary to run the demo. In this demo, <span style="color: orange"><strong>all training sets are public and synchronized across clients</strong></span>. The data you provide we will uploaded to a server and available publicly. Dataset browsers provide controls for deleting instances and classes.</div>
+          <div class="demo-container">
+            <% for (example of examples.slice(3, 7)) { %>
+              <div class="demo">
+                <div>
+                  <h3><%= example.name %></h3>
+                  <div class="description"><%= example.description %></div>
+                </div>
+                <div style="display: flex;">
+                  <a class="btn code" href="<%= example.src %>" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                  </a>
+                  <a class="btn" href="/<%= example.path %>/">
+                    Open Demo
+                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                  </a>
+                </div>
               </div>
-              <div style="display: flex;">
-                <a class="btn code" href="<%= example.src %>" target="_blank">
-                  <svg xmlns="http://www.w3.org/2000/svg" style="width:1rem; height: 1rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </a>
-                <a class="btn" href="/<%= example.path %>/">
-                  Open Demo
-                  <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
-                </a>
-              </div>
-            </div>
-          <% } %>
+            <% } %>
+          </div>
         </div>
       </main>
       <footer>
@@ -197,6 +236,7 @@
           alert('This demo works best with Chrome or Firefox');
         }
       });
+      fetch('https://marcelle-uist2021.herokuapp.com');
     </script>
   </body>
 </html>

@@ -1,9 +1,9 @@
 import { logger, Module, Stream } from '@marcellejs/core';
 
-export class PythonTrained extends Module {
+export class RunManager extends Module {
   constructor({ dataStore }) {
     super();
-    this.title = 'Python-trained model';
+    this.title = 'Training Run Manager';
     this.dataStore = dataStore;
     this.$run = new Stream({}, true);
     this.$runs = new Stream([], true);
