@@ -47,6 +47,7 @@ const plotTraining = trainingPlot(manager, {
 
 const predictionStream = createPredictionStream(
   $inputImages.filter(() => dash.$page.value === 'real-time-testing'),
+  classifier,
 );
 
 const plotResults = classificationPlot(predictionStream);
