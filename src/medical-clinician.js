@@ -15,7 +15,7 @@ import {
   $inputImages,
   instances,
   labels,
-  mobileDatasetBrowser,
+  // mobileDatasetBrowser,
   source,
   sourceImages,
   store,
@@ -121,7 +121,7 @@ const dash = dashboard({
 
 dash
   .page('Check Images')
-  .useLeft(source, classifier, mobileDatasetBrowser)
+  .useLeft(source, classifier) // , mobileDatasetBrowser
   .use([sourceImages, plotResults], [label, addToDataset], quality);
 
 dash

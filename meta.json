@@ -1,38 +1,38 @@
 [
   {
-    "name": "Sketch App (v1)",
+    "name": "Initial Prototype",
     "path": "sketch-v1",
     "description": "Suzanne's initial prototype for training a sketch classifier",
     "src": "/sketch-v1.js"
   }, {
-    "name": "Sketch App (v1++)",
+    "name": "Detailed Dashboard",
     "path": "sketch-v1b",
-    "description": "Suzanne's initial prototype, with a more detailed dashboard",
+    "description": "A variation of Suzanne's initial prototype, with a more detailed dashboard",
     "src": "/sketch-v1b.js"
   }, {
-    "name": "Sketch App (v2)",
+    "name": "Final Application",
     "path": "sketch-v2",
     "description": "Suzanne's final application with an improved workflow",
     "src": "/sketch-v2.js"
   }, {
-    "name": "Medical App (ML Expert)",
+    "name": "ML Expert's Dashboard",
     "path": "medical-ml-dashboard",
     "description": "Louise's dashboard for monitoring and assessing image classification models",
     "src": "/medical-ml-dashboard.js"
   }, {
-    "name": "Medical App (ML Expert v2)",
+    "name": "ML Expert's Comparison Dashboard",
     "path": "medical-ml-comparison",
     "description": "Louise's dashboard for comparing models",
     "src": "/medical-ml-comparison.js"
   }, {
-    "name": "Medical App (Clinician)",
+    "name": "Clinician's Interface",
     "path": "medical-clinician",
-    "description": "Michels's dashboard...",
+    "description": "Michel's Dashboard for interactively testing the classifier and correcting predictions",
     "src": "/medical-clinician.js"
   }, {
-    "name": "Medical App (Clinician Mobile App)",
+    "name": "Clinician's Mobile App)",
     "path": "medical-clinician-mobile",
-    "description": "Michels's dashboard...",
+    "description": "A mobile app enabling Michel to capture images from a smartphone to analyze in the dashboard",
     "src": "/medical-clinician-mobile.js"
   }
 ]

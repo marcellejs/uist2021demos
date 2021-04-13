@@ -1,5 +1,5 @@
 import '@marcellejs/core/dist/marcelle.css';
-import { datasetBrowser, dashboard, dataset, webcam, button } from '@marcellejs/core';
+import { datasetBrowser, dashboard, dataset, webcam, button, text } from '@marcellejs/core';
 import { store } from './common';
 
 const mobileDataset = dataset({ name: 'mobile', dataStore: store });
@@ -21,12 +21,18 @@ const $instances = capture.$click.sample(
 
 mobileDataset.capture($instances);
 
+const disclaimer = text({
+  text:
+    '<span style="color: red; ">Webcam image capture still suffers bugs. The captured image might be frozen from the webcam startup.</span>',
+});
+disclaimer.title = 'Disclaimer';
+
 const dash = dashboard({
   title: 'Marcelle: Skin Lesion Classification',
   author: 'Louise',
 });
 
-dash.page('Main').use(input, capture, mobileDatasetBrowser);
+dash.page('Main').use(disclaimer, input, capture, mobileDatasetBrowser);
 
 dash.settings.dataStores(store).datasets(mobileDatasetBrowser);
 

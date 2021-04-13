@@ -12,8 +12,8 @@ export const labels = [
   'Vascular lesion',
 ];
 
-// const location = 'https://marcelle-uist2021.herokuapp.com';
-const location = 'http://localhost:3030';
+const location = 'https://marcelle-uist2021.herokuapp.com';
+// const location = 'http://localhost:3030';
 export const store = dataStore({ location });
 
 // -----------------------------------------------------------
