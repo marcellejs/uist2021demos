@@ -1,0 +1,37 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "database": "mongodb",
+  "nedb": "../data",
+  "mongodb": "mongodb://localhost:27017/marcelle_uist_2021_demos",
+  "gridfs": true,
+  "uploads": "../uploads",
+  "assetTypes": ["jpg", "jpeg", "png", "wav"],
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "enabled": false,
+    "entity": "user",
+    "service": "users",
+    "secret": "xfH5DvOgPtYdWnB3DTyLIvsMm6Y=",
+    "authStrategies": [
+      "jwt",
+      "local"
+    ],
+    "jwtOptions": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "usernameField": "email",
+      "passwordField": "password"
+    }
+  }
+}
