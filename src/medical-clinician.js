@@ -82,7 +82,7 @@ correctSet.$count
 // INSPECT MISCLASSIFICATIONS
 // -----------------------------------------------------------
 
-const batchIncorrect = batchPrediction({ name: 'incorrect', dataStore: store });
+const batchIncorrect = batchPrediction({ name: 'incorrect' });
 const predictButton = button({ text: 'Update Confusion Matrix' });
 predictButton.title = '';
 const confusionMatrixIncorrect = confusionMatrix(batchIncorrect);

@@ -132,8 +132,9 @@ export function setupTestSet(instances) {
   return { testSet, selectLabel };
 }
 
+let nBatchPred = 0;
 export function setupBatchPrediction(testSet, classifier, predictButton) {
-  const batchTesting = batchPrediction({ name: 'ml-dashboard', dataStore: store });
+  const batchTesting = batchPrediction({ name: `medical-preds-${nBatchPred++}` });
   const confMat = confusionMatrix(batchTesting);
 
   predictButton.$click.subscribe(async () => {
@@ -146,6 +147,7 @@ export function setupBatchPrediction(testSet, classifier, predictButton) {
     }
     await batchTesting.clear();
     await batchTesting.predict(classifier, testSet, 'data');
+    console.log('batchTesting', batchTesting);
   });
   return { confMat };
 }
