@@ -6,13 +6,13 @@ import {
   dashboard,
   dataset,
   dataStore,
-  mlp,
-  mobilenet,
-  classificationPlot,
-  sketchpad,
-  textfield,
+  mlpClassifier,
+  mobileNet,
+  confidencePlot,
+  sketchPad,
+  textField,
   toggle,
-  parameters,
+  modelParameters,
   trainingProgress,
   trainingPlot,
   batchPrediction,
@@ -21,23 +21,23 @@ import {
 } from '@marcellejs/core';
 
 // Main components
-const input = sketchpad();
-const featureExtractor = mobilenet();
-const store = dataStore({ location: 'localStorage' });
-const trainingSet = dataset({ name: 'TrainingSet', dataStore: store });
-const classifier = mlp({ layers: [64, 32], epochs: 20, dataStore: store });
+const input = sketchPad();
+const featureExtractor = mobileNet();
+const store = dataStore('localStorage');
+const trainingSet = dataset('TrainingSet', store);
+const classifier = mlpClassifier({ layers: [64, 32], epochs: 20, dataStore: store });
 classifier.sync('sketch-classifier');
 const batchResults = batchPrediction({ name: 'mlp', dataStore: store });
 
 // Additional widgets and visualizations
-const classLabel = textfield();
+const classLabel = textField();
 const captureButton = button({ text: 'Capture this drawing' });
 const trainButton = button({ text: 'Train the classifier' });
 const batchPredictButton = button({ text: 'Update batch predictions on the training dataset' });
 const realTimePredictToggle = toggle({ text: 'Toggle real-time prediction' });
 
 const trainingSetBrowser = datasetBrowser(trainingSet);
-const classifierParams = parameters(classifier);
+const classifierParams = modelParameters(classifier);
 const progress = trainingProgress(classifier);
 const lossCurves = trainingPlot(classifier);
 const confusion = confusionMatrix(batchResults);
@@ -45,15 +45,14 @@ const confusion = confusionMatrix(batchResults);
 // Dataset Pipeline
 const $instances = captureButton.$click
   .sample(input.$images.zip((thumbnail, data) => ({ thumbnail, data }), input.$thumbnails))
-  .map(async (instance) => ({
-    ...instance,
-    type: 'sketch',
-    label: classLabel.$text.value,
-    features: await featureExtractor.process(instance.data),
+  .map(async ({ thumbnail, data }) => ({
+    x: await featureExtractor.process(data),
+    y: classLabel.$text.value,
+    thumbnail,
   }))
   .awaitPromises();
 
-trainingSet.capture($instances);
+$instances.subscribe(trainingSet.create.bind(trainingSet));
 
 // Training Pipeline
 trainButton.$click.subscribe(() => classifier.train(trainingSet));
@@ -66,7 +65,7 @@ const $features = input.$images
 
 const $predictions = $features.map((features) => classifier.predict(features)).awaitPromises();
 
-const predictionViz = classificationPlot($predictions);
+const predictionViz = confidencePlot($predictions);
 
 // Batch Prediction Pipeline
 batchPredictButton.$click.subscribe(async () => {
@@ -82,12 +81,12 @@ const myDashboard = dashboard({ title: 'Sketch App (v1++)', author: 'Suzanne' })
 
 myDashboard
   .page('Data Management')
-  .useLeft(input, featureExtractor)
+  .sidebar(input, featureExtractor)
   .use([classLabel, captureButton], trainingSetBrowser);
 myDashboard.page('Training').use(classifierParams, trainButton, progress, lossCurves);
 myDashboard.page('Batch Prediction').use(batchPredictButton, confusion);
-myDashboard.page('Real-time Prediction').useLeft(input).use(realTimePredictToggle, predictionViz);
+myDashboard.page('Real-time Prediction').sidebar(input).use(realTimePredictToggle, predictionViz);
 
 myDashboard.settings.dataStores(store).datasets(trainingSet).models(classifier);
 
-myDashboard.start();
+myDashboard.show();

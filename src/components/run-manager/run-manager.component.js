@@ -1,6 +1,6 @@
-import { logger, Module, Stream } from '@marcellejs/core';
+import { logger, Component, Stream } from '@marcellejs/core';
 
-export class RunManager extends Module {
+export class RunManager extends Component {
   constructor({ dataStore }) {
     super();
     this.title = 'Training Run Manager';

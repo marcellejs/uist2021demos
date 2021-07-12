@@ -6,7 +6,7 @@ import {
   confusionMatrix,
   dashboard,
   dataset,
-  classificationPlot,
+  confidencePlot,
   select,
   text,
   imageDisplay,
@@ -29,8 +29,8 @@ classifier.sync('clinician-model');
 // DATASET DEFINITIONS
 // -----------------------------------------------------------
 
-const correctSet = dataset({ name: 'CorrectSet', dataStore: store });
-const incorrectSet = dataset({ name: 'IncorrectSet', dataStore: store });
+const correctSet = dataset('CorrectSet', store);
+const incorrectSet = dataset('IncorrectSet', store);
 
 const correctSetBrowser = datasetBrowser(correctSet);
 correctSetBrowser.title = 'Dataset: Correct Predictions';
@@ -43,7 +43,7 @@ incorrectSetBrowser.title = 'Dataset: Incorrect Predictions';
 
 const predictionStream = $inputImages.map(async (img) => classifier.predict(img)).awaitPromises();
 
-const plotResults = classificationPlot(predictionStream);
+const plotResults = confidencePlot(predictionStream);
 
 const label = select({ options: labels });
 label.title = 'Correct the prediction if necessary';
@@ -58,12 +58,12 @@ const addToDataset = button({ text: 'Confirm diagnosis' });
 addToDataset.title = 'Add to the dataset';
 
 addToDataset.$click
-  .snapshot((instance) => ({ ...instance, label: label.$value.value }), instances)
+  .snapshot((instance) => ({ ...instance, y: label.$value.value }), instances)
   .subscribe((instance) => {
-    if (predictedLabel === instance.label) {
-      correctSet.addInstance(instance);
+    if (predictedLabel === instance.y) {
+      correctSet.create(instance);
     } else {
-      incorrectSet.addInstance(instance);
+      incorrectSet.create(instance);
     }
   });
 
@@ -90,22 +90,22 @@ confusionMatrixIncorrect.title = 'Confusion Matrix (Incorrect)';
 
 predictButton.$click.subscribe(async () => {
   await batchIncorrect.clear();
-  await batchIncorrect.predict(classifier, incorrectSet, 'data');
+  await batchIncorrect.predict(classifier, incorrectSet);
 });
 
 function selectedStream(ds, dsBrowser) {
   return dsBrowser.$selected
     .filter((x) => x.length === 1)
-    .map(([id]) => ds.getInstance(id, ['data']))
+    .map(([id]) => ds.get(id, ['x']))
     .awaitPromises()
-    .map(({ data }) => data);
+    .map(({ x }) => x);
 }
 
 const $selectedImage = selectedStream(correctSet, correctSetBrowser).merge(
   selectedStream(incorrectSet, incorrectSetBrowser),
 );
 const $predictions2 = createPredictionStream($selectedImage, classifier);
-const plotResults2 = classificationPlot($predictions2);
+const plotResults2 = confidencePlot($predictions2);
 
 const helpText = text({ text: "Select instances to review the model's predictions" });
 helpText.title = 'hint';
@@ -121,15 +121,15 @@ const dash = dashboard({
 
 dash
   .page('Check Images')
-  .useLeft(source, classifier) // , mobileDatasetBrowser
-  .use([sourceImages, plotResults], [label, addToDataset], quality);
+  .sidebar(source, classifier) // , mobileDatasetBrowser
+  .use([sourceImages, plotResults], quality, label, addToDataset);
 
 dash
   .page('Inspect Misclassifications')
-  .useLeft(classifier, predictButton, confusionMatrixIncorrect)
+  .sidebar(classifier, predictButton, confusionMatrixIncorrect)
   .use(helpText)
   .use([correctSetBrowser, incorrectSetBrowser], [imageDisplay($selectedImage), plotResults2]);
 
 dash.settings.dataStores(store).datasets(correctSet, incorrectSet).models(classifier);
 
-dash.start();
+dash.show();

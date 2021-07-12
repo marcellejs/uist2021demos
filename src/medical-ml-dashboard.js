@@ -4,11 +4,11 @@ import {
   button,
   dashboard,
   dataset,
-  classificationPlot,
+  confidencePlot,
   trainingPlot,
   notification,
 } from '@marcellejs/core';
-import { runManager } from './modules';
+import { runManager } from './components';
 import { $inputImages, instances, source, sourceImages, store } from './common';
 import {
   createModel,
@@ -50,7 +50,7 @@ const predictionStream = createPredictionStream(
   classifier,
 );
 
-const plotResults = classificationPlot(predictionStream);
+const plotResults = confidencePlot(predictionStream);
 
 // -----------------------------------------------------------
 // BATCH PREDICTION
@@ -98,8 +98,8 @@ selectClinicianModel.$click.subscribe(async () => {
 // CLINICIAN'S DATA
 // -----------------------------------------------------------
 
-const correctSet = dataset({ name: 'CorrectSet', dataStore: store });
-const incorrectSet = dataset({ name: 'IncorrectSet', dataStore: store });
+const correctSet = dataset('CorrectSet', store);
+const incorrectSet = dataset('IncorrectSet', store);
 
 const correctSetBrowser = datasetBrowser(correctSet);
 correctSetBrowser.title = 'Correct Predictions';
@@ -112,10 +112,10 @@ incorrectSetBrowser.title = 'Incorrect Predictions';
 
 dash
   .page('Model Selector')
-  .useLeft(selectRun, selectModel, loadModel, classifier)
+  .sidebar(selectRun, selectModel, loadModel, classifier)
   .use(plotTraining, runInfo, modelInfo);
-dash.page('Real-time Testing').useLeft(classifier, source).use([sourceImages, plotResults]);
-dash.page('Batch Testing').useLeft(source, selectLabel).use(testSetBrowser, predictButton, confMat);
+dash.page('Real-time Testing').sidebar(classifier, source).use([sourceImages, plotResults]);
+dash.page('Batch Testing').sidebar(source, selectLabel).use(testSetBrowser, predictButton, confMat);
 dash
   .page('Collaboration')
   .use('Share Model', selectClinicianModel)
@@ -123,4 +123,4 @@ dash
 
 dash.settings.dataStores(store).datasets(testSet, correctSet, incorrectSet).models(classifier);
 
-dash.start();
+dash.show();

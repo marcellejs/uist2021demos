@@ -1,11 +1,5 @@
 import '@marcellejs/core/dist/marcelle.css';
-import {
-  datasetBrowser,
-  button,
-  dashboard,
-  classificationPlot,
-  trainingPlot,
-} from '@marcellejs/core';
+import { datasetBrowser, button, dashboard, confidencePlot, trainingPlot } from '@marcellejs/core';
 import { instances, source, sourceImages, store } from './common';
 import {
   createModel,
@@ -14,7 +8,7 @@ import {
   setupBatchPrediction,
   setupTestSet,
 } from './ml-utils';
-import { runManager } from './modules';
+import { runManager } from './components';
 
 const dash = dashboard({
   title: 'Marcelle: Skin Lesion Classification',
@@ -64,7 +58,7 @@ const predictionStreams = classifiers.map((classifier) =>
 );
 
 const predictionPlots = predictionStreams.map((p, i) => {
-  const x = classificationPlot(p);
+  const x = confidencePlot(p);
   x.title = `Predictions (Model ${i + 1})`;
   return x;
 });
@@ -96,10 +90,10 @@ dash
   .use(runSelectors, modelSelectors, modelLoaders, classifiers)
   .use(lossPlots, accuracyPlots);
 // .use(trainingPlots, runSummary, modelSummary);
-dash.page('Real-time Testing').useLeft(source, sourceImages).use(predictionPlots, classifiers);
+dash.page('Real-time Testing').sidebar(source, sourceImages).use(predictionPlots, classifiers);
 dash
   .page('Batch Testing')
-  .useLeft(source, selectLabel)
+  .sidebar(source, selectLabel)
   .use(testSetBrowser, classifiers, predictButton, confusionMatrices);
 
 dash.settings
@@ -107,4 +101,4 @@ dash.settings
   .datasets(testSet)
   .models(...classifiers);
 
-dash.start();
+dash.show();

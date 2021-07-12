@@ -1,4 +1,4 @@
-import { RunManager } from './run-manager.module';
+import { RunManager } from './run-manager.component';
 
 export function runManager(options) {
   return new RunManager(options);

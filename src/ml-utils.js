@@ -6,7 +6,7 @@ import {
   notification,
   select,
   text,
-  tfGenericModel,
+  tfjsModel,
 } from '@marcellejs/core';
 import { labels, store } from './common';
 
@@ -99,7 +99,7 @@ export function modelSummary(manager) {
 }
 
 export function createModel() {
-  const classifier = tfGenericModel({
+  const classifier = tfjsModel({
     inputType: 'image',
     taskType: 'classification',
     dataStore: store,
@@ -124,11 +124,13 @@ export function createPredictionStream($inputImages, classifier) {
 }
 
 export function setupTestSet(instances) {
-  const testSet = dataset({ name: 'test-set', dataStore: store });
+  const testSet = dataset('test-set', store);
 
   const selectLabel = select({ options: labels });
   selectLabel.title = 'Select label:';
-  testSet.capture(instances.map((y) => ({ ...y, label: selectLabel.$value.value })));
+  instances
+    .map((x) => ({ ...x, y: selectLabel.$value.value }))
+    .subscribe(testSet.create.bind(testSet));
   return { testSet, selectLabel };
 }
 
@@ -147,7 +149,6 @@ export function setupBatchPrediction(testSet, classifier, predictButton) {
     }
     await batchTesting.clear();
     await batchTesting.predict(classifier, testSet, 'data');
-    console.log('batchTesting', batchTesting);
   });
   return { confMat };
 }

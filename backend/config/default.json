@@ -3,10 +3,13 @@
   "port": 3030,
   "database": "mongodb",
   "nedb": "../data",
+  "uploads": "../uploads",
   "mongodb": "mongodb://localhost:27017/marcelle_uist_2021_demos",
   "gridfs": true,
-  "uploads": "../uploads",
-  "assetTypes": ["jpg", "jpeg", "png", "wav"],
+  "whitelist": {
+    "services": "*",
+    "assets": ["jpg", "jpeg", "png", "wav"]
+  },
   "paginate": {
     "default": 10,
     "max": 50
