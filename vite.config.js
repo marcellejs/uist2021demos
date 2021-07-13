@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import svelte from 'rollup-plugin-svelte';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'path';
 import { render } from 'ejs';
 import examples from './meta.json';
@@ -36,7 +36,7 @@ export default {
         examples,
       },
     }),
-    svelte(),
+    svelte({ emitCss: false }),
   ],
   build: {
     rollupOptions: {
