@@ -43,22 +43,14 @@ const $instances = captureButton.$click
 $instances.subscribe(trainingSet.create.bind(trainingSet));
 
 // Training Pipeline
-trainingSet.$changes.subscribe((changes) => {
+trainingSet.$changes.subscribe(async (changes) => {
+  await trainingSet.ready;
+  const labels = await trainingSet.distinct('y');
   if (changes.length === 0 || changes[0].level === 'dataset') return;
-  if (trainingSet.$labels.value.length < 2) {
+  if (labels.length < 2) {
     notification({
       title: 'Tip',
       message: 'You need to have at least two classes to train the model',
-      duration: 5000,
-    });
-  } else if (
-    Object.values(trainingSet.$classes.value)
-      .map((x) => x.length)
-      .reduce((x, y) => x || y < 2, false)
-  ) {
-    notification({
-      title: 'Tip',
-      message: 'You need to record at least two examples per class',
       duration: 5000,
     });
   } else {
