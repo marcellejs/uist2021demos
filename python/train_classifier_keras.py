@@ -42,8 +42,9 @@ class Classifier:
     def train(self, train_ds, val_ds):
         self.callbacks = [
             KerasCallback(
-                model_checkpoint_freq=1,
-                disk_save_format="h5",
+                "efficientnet",
+                model_checkpoint_freq=5,
+                disk_save_format="saved_model",
                 remote_save_format="tfjs",
                 run_params=self.params,
             ),

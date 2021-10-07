@@ -88,6 +88,7 @@ class Classifier:
 
     def train(self, train_ds, val_ds):
         self.writer = Writer(
+            self.params["base_model"],
             disk_save_format="saved_model",
             remote_save_format="tfjs",
         )
@@ -256,7 +257,7 @@ def params_transfer_finetune(base):
         "epochs": [10, 10],
         "learning_rate": [1e-3, 1e-4],
         "data_augmentation": [False, False],
-        "fine_tune_layers": [0, 30],
+        "fine_tune_layers": [0, 23],
     }
 
 

@@ -1,5 +1,11 @@
 import '@marcellejs/core/dist/marcelle.css';
-import { datasetBrowser, button, dashboard, confidencePlot, trainingPlot } from '@marcellejs/core';
+import {
+  datasetBrowser,
+  button,
+  dashboard,
+  confidencePlot,
+  trainingHistory,
+} from '@marcellejs/core';
 import { instances, source, sourceImages, store } from './common';
 import {
   createModel,
@@ -8,7 +14,6 @@ import {
   setupBatchPrediction,
   setupTestSet,
 } from './ml-utils';
-import { runManager } from './components';
 
 const dash = dashboard({
   title: 'Marcelle: Skin Lesion Classification',
@@ -28,23 +33,19 @@ const classifiers = modelIdx.map((i) => {
 // Training Experiment Management
 // -----------------------------------------------------------
 
-const managers = modelIdx.map(() => runManager({ dataStore: store }));
+const hist = trainingHistory(store, {
+  metrics: ['accuracy', 'val_accuracy'],
+  actions: [
+    { name: 'select model 1', multiple: false },
+    { name: 'select model 2', multiple: false },
+  ],
+});
 
-const controls = managers.map((manager, i) => managerControls(manager, classifiers[i]));
-const runSelectors = controls.map(({ selectRun }) => selectRun);
-const modelSelectors = controls.map(({ selectModel }) => selectModel);
+const controls = classifiers.map((classifier, i) =>
+  managerControls(hist, classifier, `select model ${i + 1}`),
+);
+const checkpointSelectors = controls.map(({ selectCheckpoint }) => selectCheckpoint);
 const modelLoaders = controls.map(({ loadModel }) => loadModel);
-
-const lossPlots = managers.map((manager) =>
-  trainingPlot(manager, {
-    loss: ['loss', 'val_loss'],
-  }),
-);
-const accuracyPlots = managers.map((manager) =>
-  trainingPlot(manager, {
-    accuracy: ['accuracy', 'val_accuracy'],
-  }),
-);
 
 // -----------------------------------------------------------
 // REAL-TIME PREDICTION
@@ -85,11 +86,7 @@ const confusionMatrices = classifiers.map((classifier, i) => {
 // DASHBOARDS
 // -----------------------------------------------------------
 
-dash
-  .page('Model Selector')
-  .use(runSelectors, modelSelectors, modelLoaders, classifiers)
-  .use(lossPlots, accuracyPlots);
-// .use(trainingPlots, runSummary, modelSummary);
+dash.page('Model Selector').use(hist, checkpointSelectors, modelLoaders, classifiers);
 dash.page('Real-time Testing').sidebar(source, sourceImages).use(predictionPlots, classifiers);
 dash
   .page('Batch Testing')

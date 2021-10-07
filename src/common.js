@@ -11,8 +11,8 @@ export const labels = [
   'Vascular lesion',
 ];
 
-// const location = 'https://marcelle-uist2021.herokuapp.com';
-const location = 'http://localhost:3030';
+const location = 'https://marcelle-uist2021.herokuapp.com';
+// const location = 'http://localhost:3030';
 export const store = dataStore(location);
 
 // -----------------------------------------------------------
@@ -45,6 +45,5 @@ export const $uploadInstances = source.$images.zip(
   (thumbnail, data) => ({ thumbnail, x: data, y: 'unlabeled' }),
   source.$thumbnails,
 );
-$uploadInstances.subscribe(console.log);
 
 export const instances = $uploadInstances.merge($mobileInstances);

@@ -5,17 +5,14 @@ import {
   dashboard,
   dataset,
   confidencePlot,
-  trainingPlot,
   notification,
+  trainingHistory,
 } from '@marcellejs/core';
-import { runManager } from './components';
 import { $inputImages, instances, source, sourceImages, store } from './common';
 import {
   createModel,
   createPredictionStream,
   managerControls,
-  modelSummary,
-  runSummary,
   setupBatchPrediction,
   setupTestSet,
 } from './ml-utils';
@@ -30,16 +27,12 @@ const dash = dashboard({
 // -----------------------------------------------------------
 
 const classifier = createModel();
-const manager = runManager({ dataStore: store });
-
-const { selectRun, selectModel, loadModel } = managerControls(manager, classifier);
-const runInfo = runSummary(manager);
-const modelInfo = modelSummary(manager);
-
-const plotTraining = trainingPlot(manager, {
-  loss: ['loss', 'val_loss'],
-  accuracy: ['accuracy', 'val_accuracy'],
+const hist = trainingHistory(store, {
+  metrics: ['accuracy', 'val_accuracy'],
+  actions: [{ name: 'select model', multiple: false }],
 });
+
+const { selectCheckpoint, loadModel } = managerControls(hist, classifier);
 
 // -----------------------------------------------------------
 // REAL-TIME PREDICTION
@@ -110,10 +103,7 @@ incorrectSetBrowser.title = 'Incorrect Predictions';
 // DASHBOARDS
 // -----------------------------------------------------------
 
-dash
-  .page('Model Selector')
-  .sidebar(selectRun, selectModel, loadModel, classifier)
-  .use(plotTraining, runInfo, modelInfo);
+dash.page('Model Selector').use(hist, [selectCheckpoint, loadModel], classifier);
 dash.page('Real-time Testing').sidebar(classifier, source).use([sourceImages, plotResults]);
 dash.page('Batch Testing').sidebar(source, selectLabel).use(testSetBrowser, predictButton, confMat);
 dash
