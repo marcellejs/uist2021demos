@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@marcellejs/backend": "^0.0.4",
-    "@marcellejs/core": "^0.4.1",
+    "@marcellejs/core": "^0.4.2",
     "@tensorflow/tfjs-core": "^3.7.0",
     "@tensorflow/tfjs-layers": "^3.7.0",
     "svelte": "^3.38.3"
