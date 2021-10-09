@@ -231,7 +231,7 @@ class Classifier:
                 "val_accuracy": val_acc,
             }
             pb_i.update(step + 1, values=list(logs.items()), finalize=True)
-            self.writer.save_epoch(epoch, logs=logs, save_checkpoint=True)
+            self.writer.save_epoch(epoch + 1, logs=logs, save_checkpoint=True)
 
 
 def params_end2end(base):
@@ -243,7 +243,7 @@ def params_end2end(base):
         "strategy": "end2end",
         "epochs": 10,
         "learning_rate": 1e-3,
-        "data_augmentation": True,
+        "data_augmentation": False,
     }
 
 
@@ -264,14 +264,14 @@ def params_transfer_finetune(base):
 if __name__ == "__main__":
     TRAIN_DIR = "/Users/jules/Documents/Research/Datasets/HAM10000/processed/train_dir"
     for PARAMS in [
-        # params_end2end("mobilenet"),
-        params_transfer_finetune("mobilenet"),
+        params_end2end("mobilenet"),
+        # params_transfer_finetune("mobilenet"),
         # params_end2end("resnet50v2"),
-        params_transfer_finetune("resnet50v2"),
+        # params_transfer_finetune("resnet50v2"),
         # params_end2end("efficientnet"),
-        params_transfer_finetune("efficientnet"),
+        # params_transfer_finetune("efficientnet"),
         # params_end2end("vgg16"),
-        params_transfer_finetune("vgg16"),
+        # params_transfer_finetune("vgg16"),
     ]:
         TRAIN_DS, VAL_DS, LABELS = load_datasets(
             train_dir=TRAIN_DIR,
