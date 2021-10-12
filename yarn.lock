@@ -356,10 +356,10 @@
     serve-favicon "^2.5.0"
     winston "^3.0.0"
 
-"@marcellejs/core@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@marcellejs/core/-/core-0.4.2.tgz#2893b397413eab49dca0b94b530ee2bf6ba3e4f4"
-  integrity sha512-1ZqzPqRa9nXGT1/okfr7j9uX7cSd7rBlRxzN65suhspDxVOz2MEtsrlFOFP5ymoRicq/mQLmLu9nz6TRes9tbQ==
+"@marcellejs/core@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@marcellejs/core/-/core-0.4.4.tgz#f8fb86c1a5f2609cdbc7efbf49da9c0b944041d6"
+  integrity sha512-KtV13rjWavUWWVMy8iIBI223nA4dRUTV6Ey2di3ki07ycoMQalq2Q6A9vHMsdFf6c3TCkk4LkgTqT5uNIIAy8g==
   dependencies:
     "@feathersjs/authentication-client" "^4.5.11"
     "@feathersjs/client" "^4.5.11"
